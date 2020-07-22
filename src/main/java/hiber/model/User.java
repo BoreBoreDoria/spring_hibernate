@@ -2,7 +2,7 @@ package hiber.model;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name = "User")
 @Table(name = "users")
 public class User {
 
@@ -19,10 +19,18 @@ public class User {
    @Column(name = "email")
    private String email;
 
-   @OneToOne(cascade = CascadeType.ALL)
-   @JoinColumn(name = "car_id", referencedColumnName = "id")
+   @OneToOne(
+           mappedBy = "user",
+           cascade = CascadeType.ALL,
+           orphanRemoval = true,
+           fetch = FetchType.LAZY
+   )
    private Car car;
 
+   public void addCar(Car car){
+      car.setUser(this);
+      this.car = car;
+   }
    public User() {}
 
    public User(String firstName, String lastName, String email) {
@@ -31,13 +39,6 @@ public class User {
       this.email = email;
    }
 
-   public Car getCar() {
-      return car;
-   }
-
-   public void setCar(Car car) {
-      this.car = car;
-   }
    public Long getId() {
       return id;
    }
