@@ -1,8 +1,10 @@
 package hiber.model;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 
-@Entity(name ="Car")
+@Entity
 @Table(name = "cars")
 public class Car{
     @Id
@@ -13,9 +15,16 @@ public class Car{
 
     private int series;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public Car(String name, int series) {
+        this.name = name;
+        this.series = series;
+    }
+
+    public Car(){}
 
     public Long getId() {
         return id;
@@ -47,5 +56,11 @@ public class Car{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return " name='" + name + '\'' +
+                ", series=" + series;
     }
 }

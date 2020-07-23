@@ -1,8 +1,10 @@
 package hiber.model;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.*;
 
-@Entity(name = "User")
+@Entity
 @Table(name = "users")
 public class User {
 
@@ -23,7 +25,7 @@ public class User {
            mappedBy = "user",
            cascade = CascadeType.ALL,
            orphanRemoval = true,
-           fetch = FetchType.LAZY
+           fetch = FetchType.EAGER
    )
    private Car car;
 
@@ -31,6 +33,15 @@ public class User {
       car.setUser(this);
       this.car = car;
    }
+
+   public Car getCar() {
+      return car;
+   }
+
+   public void setCar(Car car) {
+      this.car = car;
+   }
+
    public User() {}
 
    public User(String firstName, String lastName, String email) {
@@ -69,5 +80,16 @@ public class User {
 
    public void setEmail(String email) {
       this.email = email;
+   }
+
+   @Override
+   public String toString() {
+      return "User{" +
+              "id=" + id +
+              ", firstName='" + firstName + '\'' +
+              ", lastName='" + lastName + '\'' +
+              ", email='" + email + '\'' +
+              ", car:" + car +
+              " }";
    }
 }
